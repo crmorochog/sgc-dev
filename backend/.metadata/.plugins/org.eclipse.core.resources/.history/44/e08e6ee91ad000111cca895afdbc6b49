@@ -1,0 +1,5 @@
+package com.sgc.cmorocho.dto;
+
+public record ContactRequest() {
+
+}

@@ -1,0 +1,68 @@
+package com.sgc.cmorocho.controller;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import com.sgc.cmorocho.dto.ContactRequest;
+import com.sgc.cmorocho.model.Contact;
+import com.sgc.cmorocho.service.ContactService;
+
+@RestController
+@RequestMapping("/api/contacts")
+public class ContactController {
+
+    private final ContactService service;
+
+    public ContactController(ContactService service) {
+        this.service = service;
+    }
+
+    // Temporal para probar el CRUD. Luego lo reemplazaremos por el usuario del JWT.
+    private Long currentUserId() {
+        return 1L;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Contact create(@Valid @RequestBody ContactRequest request) {
+        return service.create(currentUserId(), request);
+    }
+
+    @GetMapping
+    public Page<Contact> list(
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
+
+        return service.list(
+                currentUserId(),
+                search,
+                PageRequest.of(page, size, Sort.by("lastName").ascending())
+        );
+    }
+
+    @GetMapping("/{id}")
+    public Contact get(@PathVariable Long id) {
+        return service.get(currentUserId(), id);
+    }
+
+    @PutMapping("/{id}")
+    public Contact update(
+            @PathVariable Long id,
+            @Valid @RequestBody ContactRequest request) {
+        return service.update(currentUserId(), id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.delete(currentUserId(), id);
+    }
+    
+}
