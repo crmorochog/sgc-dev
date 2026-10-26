@@ -1,0 +1,5 @@
+package com.sgc.cmorocho.auth.service;
+
+public class JwtService {
+
+}

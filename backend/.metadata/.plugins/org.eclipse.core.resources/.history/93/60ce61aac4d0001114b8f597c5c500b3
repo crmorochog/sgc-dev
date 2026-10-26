@@ -1,0 +1,5 @@
+package com.sgc.cmorocho.auth.filter;
+
+public class JwtAuthenticationFilter {
+
+}

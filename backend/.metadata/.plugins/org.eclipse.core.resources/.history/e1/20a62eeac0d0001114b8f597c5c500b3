@@ -1,0 +1,5 @@
+package com.sgc.cmorocho.repository;
+
+public interface UserRepository {
+
+}
